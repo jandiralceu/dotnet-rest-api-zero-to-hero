@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:17.0
+    restart: always
+    ports:
+        - 5432:5432
+    environment:
+        POSTGRES_USER: course
+        POSTGRES_PASSWORD: changename
+        POSTGRES_DB: movies
