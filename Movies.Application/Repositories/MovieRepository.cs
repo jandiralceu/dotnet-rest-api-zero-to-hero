@@ -104,17 +104,55 @@ namespace Movies.Application.Repositories
 
         public async Task<bool> UpdateAsync(Movie movie)
         {
-            throw new NotImplementedException();
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+            using var transaction = connection.BeginTransaction();
+
+            await connection.ExecuteAsync(new CommandDefinition("""
+                DELETE FROM genres WHERE movieid = @id
+                """, new { movie.Id }));
+
+            foreach (var genre in movie.Genres)
+            {
+                await connection.ExecuteAsync(new CommandDefinition("""
+                    INSERT INTO genres (movieId, name)
+                    VALUES (@MovieId, @Name)
+                    """, new { MovieId = movie.Id, Name = genre }));
+            }
+
+            var result = await connection.ExecuteAsync(new CommandDefinition("""
+                UPDATE movies
+                SET slug = @Slug, title = @Title, yearofrelease = @YearOfRelease
+                WHERE id = @Id
+                """, movie));
+            
+            transaction.Commit();
+
+            return result > 0;
         }
 
         public async Task<bool> DeleteByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+            using var transaction = connection.BeginTransaction();
+
+            await connection.ExecuteAsync(new CommandDefinition("""
+                DELETE FROM genres WHERE movieid = @id
+                """, new { id }));
+
+            var result = await connection.ExecuteAsync(new CommandDefinition("""
+                DELETE FROM movies WHERE id = @id
+                """, new { id }));
+
+            transaction.Commit();
+            return result > 0;
         }
 
         public async Task<bool> CheckIfExistsByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using var connection = await _connectionFactory.CreateConnectionAsync();
+            return await connection.ExecuteScalarAsync<bool>(new CommandDefinition("""
+                SELECT count(1) FROM movies WHERE id = @id
+                """, new { id }));
         }
     }
 }
