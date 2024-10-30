@@ -1,6 +1,7 @@
-@Movies.Api_HostAddress = http://localhost:5119
+@Movies.Api_HostAddress = http://localhost:5001/api
 
-GET {{Movies.Api_HostAddress}}/weatherforecast/
+GET http://localhost:5001/api/movies HTTP/1.1
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlNGFiOTQxYy0wYmU1LTQwNzYtYjNkNS03OGNmZmE0MTdjZjIiLCJzdWIiOiJuaWNrQG5pY2tjaGFwc2FzLmNvbSIsImVtYWlsIjoibmlja0BuaWNrY2hhcHNhcy5jb20iLCJ1c2VyaWQiOiJkODU2NmRlMy1iMWE2LTRhOWItYjg0Mi04ZTM4ODdhODJlNDEiLCJhZG1pbiI6dHJ1ZSwidHJ1c3RlZF9tZW1iZXIiOnRydWUsIm5iZiI6MTczMDI1ODExOSwiZXhwIjoxNzMwMjg2OTE5LCJpYXQiOjE3MzAyNTgxMTksImlzcyI6Imh0dHBzOi8vaWQubmlja2NoYXBzYXMuY29tIiwiYXVkIjoiaHR0cHM6Ly9tb3ZpZXMubmlja2NoYXBzYXMuY29tIn0.8c-Bx21X45uB_2VyU0sX0WO7dhHn5g3FMORCQjW_O6k
 
 ###

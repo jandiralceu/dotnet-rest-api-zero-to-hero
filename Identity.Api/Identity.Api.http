@@ -1,0 +1,13 @@
+## Generate token
+POST https://localhost:5003/token HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "userid": "d8566de3-b1a6-4a9b-b842-8e3887a82e41",
+    "email": "nick@nickchapsas.com",
+    "customClaims": {
+         "admin": true,
+         "trusted_member": true
+    }
+}
