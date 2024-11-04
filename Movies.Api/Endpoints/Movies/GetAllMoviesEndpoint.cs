@@ -2,6 +2,7 @@ using Movies.Api.Auth;
 using Movies.Api.Mapping;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
+using Movies.Contracts.Responses;
 
 namespace Movies.Api.Endpoints.Movies;
 
@@ -24,7 +25,11 @@ public static class GetAllMoviesEndpoint
                 moviesCount);
 
             return TypedResults.Ok(moviesResponse);
-        }).WithName(Name);
+        })
+            .WithName($"{Name}V1")
+            .Produces<MoviesResponse>(StatusCodes.Status200OK)
+            .WithApiVersionSet(ApiVersioning.VersionSet)
+            .HasApiVersion(1.0);
 
         return app;
     }

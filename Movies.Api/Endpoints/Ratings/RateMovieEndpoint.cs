@@ -17,7 +17,11 @@ public static class RateMovieEndpoint
             var result = await ratingService.RateMovieAsync(id, request.Rating, userId!.Value, token);
 
             return result ? Results.Ok() : Results.NotFound();
-        }).WithName(Name);
+        })
+            .WithName(Name)
+            .Produces(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .RequireAuthorization();
         
         return app;
     }
