@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Movies.Api.Auth;
+using Movies.Api.Endpoints;
 using Movies.Api.Health;
 using Movies.Api.Mapping;
 using Movies.Api.Swagger;
@@ -36,8 +37,6 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddAuthorization(x =>
 {
-    // x.AddPolicy(AuthConstants.AdminUserPolicyName, p => 
-    //     p.RequireClaim(AuthConstants.AdminUserClaimName, "true"));
     x.AddPolicy(AuthConstants.AdminUserPolicyName, 
         p => p.AddRequirements(new AdminAuthRequirement(config["ApiKey"]!)));
     
@@ -61,7 +60,6 @@ builder.Services.AddApiVersioning(x =>
     x.ApiVersionReader = new MediaTypeApiVersionReader("api-version");
 }).AddMvc().AddApiExplorer();
 
-// builder.Services.AddResponseCaching();
 builder.Services.AddOutputCache(x =>
 {
     x.AddBasePolicy(c => c.Cache());
@@ -71,8 +69,6 @@ builder.Services.AddOutputCache(x =>
             .SetVaryByQuery(["title", "year", "sortBy", "page", "pageSize"])
             .Tag("movies"));
 });
-
-builder.Services.AddControllers();
 
 builder.Services.AddHealthChecks().AddCheck<DatabaseHealthCheck>(DatabaseHealthCheck.Name);
 
@@ -109,7 +105,7 @@ app.UseAuthorization();
 app.UseOutputCache();
 
 app.UseMiddleware<ValidationMappingMiddleware>();
-app.MapControllers();
+app.MapApiEndpoints();
 
 var dbInitializer = app.Services.GetRequiredService<DbInitializer>();
 

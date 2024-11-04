@@ -85,7 +85,8 @@ public class MoviesController : ControllerBase
         var movies = await _movieService.GetAllAsync(options, cancellationToken);
         var moviesCount = await _movieService.GetCountSync(request.Title, request.Year, cancellationToken);
 
-        return Ok(movies.MapToResponse(request.Page, request.PageSize, moviesCount));
+        // return Ok(movies.MapToResponse(request.Page, request.PageSize, moviesCount));
+        return Ok();
     }
 
     [Authorize(AuthConstants.TrustedMemberPolicyName)]
